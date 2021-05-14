@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.mascotapp.service.entity.Mascota;
 import es.mascotapp.service.entity.Veterinario;
 import es.mascotapp.service.service.interfaces.VeterinarioService;
 
@@ -86,5 +88,13 @@ public class VeterinarioController {
 				.collect(Collectors.toList());
 		return veterinarios;
 	}
+	
+	//Comprobar usuario y contraseña
+	@GetMapping(params = {"usuario", "password"})
+	public boolean findByUsuarioAndPassword(@RequestParam(value="usuario") String usuario, @RequestParam(value="password") String password) {
+		//Optional<Veterinario> vet = veterinarioService.findByUsuarioAndPassword(usuario, password);
+		return false;
+	}
+	
 	
 }

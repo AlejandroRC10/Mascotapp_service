@@ -57,8 +57,8 @@ public class MascotaServiceImpl implements MascotaService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Mascota> findByClienteId(Long id) {
-		return mascotDAO.findByClienteId(id);
+	public List<Mascota> findByPropietarioId(Long id) {
+		return mascotDAO.findByPropietarioId(id);
 	}
 
 }

@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import es.mascotapp.service.entity.Cliente;
+import es.mascotapp.service.entity.Vacuna;
 
 @Repository
-public interface ClienteDAO extends JpaRepository<Cliente, Long>{
-	public List<Cliente>findByVeterinarioId(Long id);
+public interface VacunaDAO extends JpaRepository<Vacuna, Long>{
+	public List<Vacuna>findByMascotaId(Long id);
 }

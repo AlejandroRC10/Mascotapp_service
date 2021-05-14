@@ -4,18 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,12 +25,11 @@ public class Mascota implements Serializable{
 	@Column(length = 45)
 	private String raza;
 	
-	//tiene que ser único
-	@Column(name = "chip", length = 45, nullable=false)
+	@Column(name = "chip", length = 45, nullable=false, unique=true)
 	private String num_chip;
 	
-	@Column(name = "tipo_animal", nullable=false)
-	private String animal;
+	@Column(name = "especie", nullable=false)
+	private String especie;
 	
 	@Column(name = "fecha_nacimiento", length = 50, nullable=false)
 	@Temporal(TemporalType.DATE)
@@ -56,8 +44,8 @@ public class Mascota implements Serializable{
 	
 	
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
-	private Cliente cliente;
+	@JoinColumn(name="propietario_id")
+	private Propietario propietario;
 	
 	@OneToMany(mappedBy="mascota", cascade= {CascadeType.ALL})
 	@JsonIgnore
@@ -66,6 +54,14 @@ public class Mascota implements Serializable{
 	@OneToMany(mappedBy="mascota", cascade= {CascadeType.ALL})
 	@JsonIgnore
 	private List<Cita>citas;
+	
+	@OneToMany(mappedBy="mascota", cascade= {CascadeType.ALL})
+	@JsonIgnore
+	private List<Desparasitacion>desparasitaciones;
+	
+	@OneToMany(mappedBy="mascota", cascade= {CascadeType.ALL})
+	@JsonIgnore
+	private List<Vacuna>vacunas;
 	
 
 	public Mascota() {
@@ -100,12 +96,12 @@ public class Mascota implements Serializable{
 		this.num_chip = num_chip;
 	}
 
-	public String getAnimal() {
-		return animal;
+	public String getEspecie() {
+		return especie;
 	}
 
-	public void setAnimal(String animal) {
-		this.animal = animal;
+	public void setEspecie(String animal) {
+		this.especie = animal;
 	}
 
 	public Calendar getFecha_nac() {
@@ -132,12 +128,12 @@ public class Mascota implements Serializable{
 		this.sexo = sexo;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Propietario getPropietario() {
+		return propietario;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setPropietario(Propietario propietario) {
+		this.propietario = propietario;
 	}
 	
 	public List<Historia> getHistorias() {
@@ -156,8 +152,8 @@ public class Mascota implements Serializable{
 		this.citas = citas;
 	}
 	
-	public void addCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void addPropietario(Propietario propietario) {
+		this.propietario = propietario;
 	}
 	
 	public void addHistoria(Historia nHistoria) {
@@ -176,6 +172,24 @@ public class Mascota implements Serializable{
 		
 		citas.add(nCita);
 		nCita.setMascota(this);
+	}
+	
+	public void addDesparasitacion(Desparasitacion nDesparasitacion) {
+		
+		if(desparasitaciones==null)
+			desparasitaciones = new ArrayList<>();
+		
+		desparasitaciones.add(nDesparasitacion);
+		nDesparasitacion.addMascota(this);
+	}
+	
+	public void addVacuna(Vacuna nVacuna) {
+		
+		if(vacunas==null)
+			vacunas = new ArrayList<>();
+		
+		vacunas.add(nVacuna);
+		nVacuna.addMascota(this);
 	}
 
 

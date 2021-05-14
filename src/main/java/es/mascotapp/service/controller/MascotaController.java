@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import es.mascotapp.service.dao.ClienteDAO;
-import es.mascotapp.service.entity.Cliente;
+import es.mascotapp.service.dao.PropietarioDAO;
+import es.mascotapp.service.entity.Propietario;
 import es.mascotapp.service.entity.Mascota;
 import es.mascotapp.service.service.interfaces.MascotaService;
 
@@ -32,17 +32,17 @@ public class MascotaController {
 	private MascotaService mascotaService;
 	
 	@Autowired
-	private ClienteDAO clieDAO;
+	private PropietarioDAO propDAO;
 	
 	//Crear nueva mascota
 	@PostMapping("/{id}")
-	public ResponseEntity<?>create(@RequestBody Mascota mascota, @PathVariable(value = "id") Long clieId){
+	public ResponseEntity<?>create(@RequestBody Mascota mascota, @PathVariable(value = "id") Long propId){
 		
-		//Busca un cliente por el id que le entra en la petición e inicializa el atributo cliente de la entidad con el valor devuelto 
-		Cliente clie = clieDAO.findById(clieId).get();
+		//Busca un propietario por el id que le entra en la petición e inicializa el atributo propietario de la entidad con el valor devuelto 
+		Propietario prop = propDAO.findById(propId).get();
 		
-		mascota.addCliente(clie);
-		clie.addMascota(mascota);
+		mascota.addPropietario(prop);
+		prop.addMascota(mascota);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(mascotaService.save(mascota));
 	}
@@ -71,7 +71,7 @@ public class MascotaController {
 		mascota.get().setNombre(mascDetalles.getNombre());
 		mascota.get().setRaza(mascDetalles.getRaza());
 		mascota.get().setNum_chip(mascDetalles.getNum_chip());
-		mascota.get().setAnimal(mascDetalles.getAnimal());
+		mascota.get().setEspecie(mascDetalles.getEspecie());
 		mascota.get().setFecha_nac(mascDetalles.getFecha_nac());
 		mascota.get().setPeso(mascDetalles.getPeso());
 		mascota.get().setSexo(mascDetalles.getSexo());
@@ -109,11 +109,11 @@ public class MascotaController {
 		return mascotas;
 	}
 	
-	//Obtener lista de mascotas por cliente_id
-	@GetMapping(params = "clie_id")
-	public List<Mascota> findByClienteId(@RequestParam(value = "clie_id") Long id){
+	//Obtener lista de mascotas por propietario_id
+	@GetMapping(params = "prop_id")
+	public List<Mascota> findByPropietarioId(@RequestParam(value = "prop_id") Long id){
 		List<Mascota>mascotas = StreamSupport
-				.stream(mascotaService.findByClienteId(id).spliterator(), false)
+				.stream(mascotaService.findByPropietarioId(id).spliterator(), false)
 				.collect(Collectors.toList());
 		return mascotas;
 	}

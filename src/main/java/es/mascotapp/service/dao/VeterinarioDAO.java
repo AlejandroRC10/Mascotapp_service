@@ -12,5 +12,5 @@ import es.mascotapp.service.entity.Veterinario;
  */
 @Repository
 public interface VeterinarioDAO extends JpaRepository<Veterinario, Long>{
-	
+	public boolean findByUsuarioAndPassword(String usuario, String password);
 }

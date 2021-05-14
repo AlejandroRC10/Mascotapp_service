@@ -48,4 +48,10 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 		vetDAO.deleteById(id);
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public boolean findByUsuarioAndPassword(String usuario, String password) {
+		return vetDAO.findByUsuarioAndPassword(usuario, password);
+	}
+
 }

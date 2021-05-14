@@ -19,4 +19,5 @@ public interface VeterinarioService {
 	
 	public void deleteById(Long id);
 	
+	public boolean findByUsuarioAndPassword(String usuario, String password);
 }

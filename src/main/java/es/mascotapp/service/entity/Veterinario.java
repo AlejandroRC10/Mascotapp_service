@@ -36,12 +36,12 @@ public class Veterinario implements Serializable{
 	private String nom_clinica;
 	
 	@Column(nullable=false, unique=true)
-	private int num_colegio;
+	private int num_colegiado;
 	
 	@Column(length = 50, nullable=false, unique=true)
 	private String usuario;
 	
-	@Column(length = 50, nullable=false)
+	@Column(nullable=false)
 	private String password;
 	
 	@Column(length = 60, nullable=false)
@@ -53,13 +53,29 @@ public class Veterinario implements Serializable{
 	
 	@OneToMany(mappedBy="veterinario",cascade= {CascadeType.ALL})
 	@JsonIgnore
-	private List<Cliente> clientes;
+	private List<Propietario> propietarios;
 	
 
 	
 	public Veterinario() {
 	}
 	
+	
+	
+	public Veterinario(String nombre, String apellidos, String nom_clinica, int num_colegiado, String usuario,
+			String password, String direccion, String telefono) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.nom_clinica = nom_clinica;
+		this.num_colegiado = num_colegiado;
+		this.usuario = usuario;
+		this.password = password;
+		this.direccion = direccion;
+		this.telefono = telefono;
+	}
+
+
+
 	public Long getId() {
 		return id;
 	}
@@ -85,10 +101,10 @@ public class Veterinario implements Serializable{
 		this.nom_clinica = nom_clinica;
 	}
 	public int getNum_colegiado() {
-		return num_colegio;
+		return num_colegiado;
 	}
 	public void setNum_colegiado(int num_colegiado) {
-		this.num_colegio = num_colegiado;
+		this.num_colegiado = num_colegiado;
 	}
 	public String getUsuario() {
 		return usuario;
@@ -114,32 +130,25 @@ public class Veterinario implements Serializable{
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	
-	public int getNum_colegio() {
-		return num_colegio;
-	}
 
-	public void setNum_colegio(int num_colegio) {
-		this.num_colegio = num_colegio;
+	@JsonIgnore
+	public List<Propietario> getPropietario() {
+		return propietarios;
 	}
-
-	public List<Cliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
+	@JsonIgnore
+	public void setPropietarios(List<Propietario> propietarios) {
+		this.propietarios = propietarios;
 	}
 
 
 	
-	public void addCliente(Cliente nCliente) {
+	public void addPropietario(Propietario nPropietario) {
 		
-		if(clientes==null)
-			clientes = new ArrayList<>();
+		if(propietarios==null)
+			propietarios = new ArrayList<>();
 		
-		clientes.add(nCliente);
-		nCliente.setVeterinario(this);
+		propietarios.add(nPropietario);
+		nPropietario.setVeterinario(this);
 	}
 	
 	

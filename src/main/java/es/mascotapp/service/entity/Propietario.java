@@ -17,9 +17,10 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+
 @Entity
-@Table(name = "clientes")
-public class Cliente implements Serializable{
+@Table(name = "propietarios")
+public class Propietario implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +33,9 @@ public class Cliente implements Serializable{
 	
 	@Column(length = 45, nullable=false)
 	private String apellidos;
+	
+	@Column(length = 9, nullable=false, unique=true)
+	private String dni;
 	
 	@Column(length = 60, nullable=false, unique=true)
 	private String email;
@@ -48,14 +52,29 @@ public class Cliente implements Serializable{
 	@JoinColumn(name="veterinario_id")
 	private Veterinario veterinario;
 	
-	@OneToMany(mappedBy="cliente", cascade= {CascadeType.ALL})
+	@OneToMany(mappedBy="propietario", cascade= {CascadeType.ALL})
 	@JsonIgnore
 	private List<Mascota>mascotas;
 	
 	
 	
-	public Cliente() {
+	public Propietario() {
 	}
+	
+	
+
+	public Propietario(String nombre, String apellidos, String dni, String email, String password, String telefono,
+			Veterinario veterinario) {
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.dni = dni;
+		this.email = email;
+		this.password = password;
+		this.telefono = telefono;
+		this.veterinario = veterinario;
+	}
+
+
 
 	public Veterinario getVeterinario() {
 		return veterinario;
@@ -120,9 +139,16 @@ public class Cliente implements Serializable{
 	public void setMascotas(List<Mascota> mascotas) {
 		this.mascotas = mascotas;
 	}
-	
-	
 
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	
 	public void addVeterinario(Veterinario veterinario) {
 		this.veterinario = veterinario;
 	}
@@ -133,7 +159,7 @@ public class Cliente implements Serializable{
 			mascotas = new ArrayList<>();
 		
 		mascotas.add(nMascota);
-		nMascota.setCliente(this);
+		nMascota.setPropietario(this);
 	}
 	
 	
