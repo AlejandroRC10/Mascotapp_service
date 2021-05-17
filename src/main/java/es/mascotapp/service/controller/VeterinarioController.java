@@ -1,6 +1,7 @@
 package es.mascotapp.service.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -90,10 +91,35 @@ public class VeterinarioController {
 	}
 	
 	//Comprobar usuario y contraseña
-	@GetMapping(params = {"usuario", "password"})
-	public boolean findByUsuarioAndPassword(@RequestParam(value="usuario") String usuario, @RequestParam(value="password") String password) {
-		//Optional<Veterinario> vet = veterinarioService.findByUsuarioAndPassword(usuario, password);
-		return false;
+//	@GetMapping(params = {"usuario", "password"})
+//	public ResponseEntity<?> login(@RequestParam(value="usuario") String usuario, @RequestParam(value="password") String password) {
+//		
+//		Optional<Veterinario>oVet = veterinarioService.findByUsuarioAndPassword(usuario, password);
+//		
+//		if(!oVet.isPresent()) {
+//			return ResponseEntity.notFound().build();
+//		}
+//		
+//		return ResponseEntity.ok(oVet);
+//	}
+	
+	//Comprobar usuario y contraseña
+	@PostMapping(path="/login")
+	public ResponseEntity<?> login(@RequestBody Map<String, String> login) {
+		String usuario = login.get("usuario");
+		String password = login.get("password");
+		
+		Optional<Veterinario>oVet = veterinarioService.findByUsuarioAndPassword(usuario, password);
+		
+		if(!oVet.isPresent()) {
+			System.out.println("usuario--------->> " + usuario);
+			System.out.println("usuario--------->> " + password);
+			System.out.println("log--------->> " + oVet.toString());
+			return ResponseEntity.notFound().build();
+		}
+
+		
+		return ResponseEntity.ok(oVet);
 	}
 	
 	

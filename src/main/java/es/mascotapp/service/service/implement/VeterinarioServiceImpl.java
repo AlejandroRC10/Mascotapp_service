@@ -50,7 +50,9 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public boolean findByUsuarioAndPassword(String usuario, String password) {
+	public Optional<Veterinario> findByUsuarioAndPassword(String usuario, String password) {
+		
+		
 		return vetDAO.findByUsuarioAndPassword(usuario, password);
 	}
 

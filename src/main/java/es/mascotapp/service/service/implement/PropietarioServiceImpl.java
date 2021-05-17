@@ -56,8 +56,8 @@ public class PropietarioServiceImpl implements PropietarioService{
 	
 	@Override
 	@Transactional(readOnly = true)
-	public boolean findByUsuarioAndPassword(String usuario, String password) {
-		return propietarioDAO.findByUsuarioAndPassword(usuario, password);
+	public boolean findByEmailAndPassword(String usuario, String password) {
+		return propietarioDAO.findByEmailAndPassword(usuario, password);
 	}
 
 }

@@ -22,6 +22,6 @@ public interface PropietarioService {
 
 	public List<Propietario> findByVeterinarioId(Long id);
 	
-	public boolean findByUsuarioAndPassword(String usuario, String password);
+	public boolean findByEmailAndPassword(String usuario, String password);
 
 }

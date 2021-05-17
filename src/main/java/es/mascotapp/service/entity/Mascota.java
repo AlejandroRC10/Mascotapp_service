@@ -17,7 +17,7 @@ public class Mascota implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@Column(length = 45, nullable=false)
 	private String nombre;
@@ -68,7 +68,7 @@ public class Mascota implements Serializable{
 	}
 
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

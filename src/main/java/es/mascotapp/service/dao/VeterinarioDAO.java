@@ -1,6 +1,8 @@
 package es.mascotapp.service.dao;
 
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,5 @@ import es.mascotapp.service.entity.Veterinario;
  */
 @Repository
 public interface VeterinarioDAO extends JpaRepository<Veterinario, Long>{
-	public boolean findByUsuarioAndPassword(String usuario, String password);
+	public Optional<Veterinario> findByUsuarioAndPassword(String usuario, String password);
 }

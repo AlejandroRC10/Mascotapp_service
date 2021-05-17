@@ -10,5 +10,5 @@ import es.mascotapp.service.entity.Propietario;
 @Repository
 public interface PropietarioDAO extends JpaRepository<Propietario, Long>{
 	public List<Propietario>findByVeterinarioId(Long id);
-	public boolean findByUsuarioAndPassword(String usuario, String password);
+	public boolean findByEmailAndPassword(String usuario, String password);
 }
