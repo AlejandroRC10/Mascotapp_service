@@ -60,5 +60,11 @@ public class MascotaServiceImpl implements MascotaService{
 	public List<Mascota> findByPropietarioId(Long id) {
 		return mascotDAO.findByPropietarioId(id);
 	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Optional<Mascota>findByPropietarioIdAndNombre(Long id, String nombre){
+		return mascotDAO.findByPropietarioIdAndNombre(id, nombre);
+	}
 
 }

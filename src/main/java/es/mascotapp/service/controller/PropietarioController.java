@@ -1,6 +1,7 @@
 package es.mascotapp.service.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -98,12 +99,43 @@ public class PropietarioController {
 	
 	//Obtener lista de propietarios por veterinario_id
 	
-	@GetMapping(params = "vet_id")
-	public List<Propietario> findByVeterinario(@RequestParam(value = "vet_id") Long id){
+	@GetMapping(params = "prop_id")
+	public List<Propietario> findByVeterinario(@RequestParam(value = "prop_id") Long id){
 		List<Propietario>propietarios = StreamSupport
 				.stream(propietarioService.findByVeterinarioId(id).spliterator(), false)
 				.collect(Collectors.toList());
 		return propietarios;
 	}
+	
+	//Obtener un propietario por Dni
+		@GetMapping(params = "dni")
+		public ResponseEntity<?>readByDni(@RequestParam(value = "dni") String propietarioDni){
+			Optional<Propietario>oProp = propietarioService.findByDni(propietarioDni);
+			
+			if(!oProp.isPresent()) {
+				return ResponseEntity.notFound().build();
+			}
+			
+			return ResponseEntity.ok(oProp);
+		}
+		
+		//Login Propietario
+		@PostMapping(path="/login")
+		public ResponseEntity<?> login(@RequestBody Map<String, String> login) {
+			String correo = login.get("email");
+			String password = login.get("password");
+			
+			Optional<Propietario>oProp = propietarioService.findByEmailAndPassword(correo, password);
+			
+			if(!oProp.isPresent()) {
+				System.out.println("correo--------->> " + correo);
+				System.out.println("password--------->> " + password);
+				System.out.println("log--------->> " + oProp.toString());
+				return ResponseEntity.notFound().build();
+			}
+
+			
+			return ResponseEntity.ok(oProp);
+		}
 	
 }

@@ -1,5 +1,6 @@
 package es.mascotapp.service.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,8 +60,15 @@ public class VacunaController {
 		}
 		
 		vacuna.get().setEnfermedad(vacunaDetalles.getEnfermedad());
-		vacuna.get().setFecha(vacunaDetalles.getFecha());
-		vacuna.get().setProximaFecha(vacunaDetalles.getProximaFecha());
+		
+		Calendar fecha = vacunaDetalles.getFecha();
+		fecha.add(Calendar.DATE, 1);
+		vacuna.get().setFecha(fecha);
+		
+		Calendar fechaProx = vacunaDetalles.getProximaFecha();
+		fechaProx.add(Calendar.DATE, 1);
+		vacuna.get().setProximaFecha(fechaProx);
+		
 		vacuna.get().setObservaciones(vacunaDetalles.getObservaciones());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(vacunaService.save(vacuna.get()));

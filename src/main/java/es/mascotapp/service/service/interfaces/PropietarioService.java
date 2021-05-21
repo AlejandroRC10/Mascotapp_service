@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import es.mascotapp.service.entity.Propietario;
+import es.mascotapp.service.entity.Veterinario;
 
 public interface PropietarioService {
 	
@@ -22,6 +23,8 @@ public interface PropietarioService {
 
 	public List<Propietario> findByVeterinarioId(Long id);
 	
-	public boolean findByEmailAndPassword(String usuario, String password);
+	public Optional<Propietario> findByEmailAndPassword(String usuario, String password);
+	
+	public Optional<Propietario> findByDni(String dni);
 
 }

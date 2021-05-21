@@ -1,5 +1,6 @@
 package es.mascotapp.service.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,7 +66,10 @@ public class HistoriaController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		historia.get().setFecha(histDetalles.getFecha());
+		Calendar fecha = histDetalles.getFecha();
+		fecha.add(Calendar.DATE, 1);
+		historia.get().setFecha(fecha);
+		
 		historia.get().setEnfermedad(histDetalles.getEnfermedad());
 		historia.get().setTratamiento(histDetalles.getTratamiento());
 		

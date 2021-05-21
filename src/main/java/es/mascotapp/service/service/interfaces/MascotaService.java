@@ -23,5 +23,7 @@ public interface MascotaService {
 	public List<Mascota>findByNombre(String nombre);
 	
 	public List<Mascota> findByPropietarioId(Long id);
+	
+	public Optional<Mascota>findByPropietarioIdAndNombre(Long id, String nombre);
 
 }

@@ -1,5 +1,6 @@
 package es.mascotapp.service.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +59,11 @@ public class DesparasitacionController {
 		}
 		
 		desp.get().setTipo(despDetalles.getTipo());
-		desp.get().setFecha(despDetalles.getFecha());
+		
+		Calendar fecha = despDetalles.getFecha();
+		fecha.add(Calendar.DATE, 1);
+		desp.get().setFecha(fecha);
+
 		desp.get().setProximaFecha(despDetalles.getProximaFecha());
 		desp.get().setObservaciones(despDetalles.getObservaciones());
 		

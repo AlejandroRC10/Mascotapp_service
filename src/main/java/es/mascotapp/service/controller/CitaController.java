@@ -1,5 +1,6 @@
 package es.mascotapp.service.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,7 +60,11 @@ public class CitaController {
 		}
 		
 		cita.get().setMotivo(citaDetalles.getMotivo());
-		cita.get().setFecha(citaDetalles.getFecha());
+		
+		Calendar fecha = citaDetalles.getFecha();
+		fecha.add(Calendar.DATE, 1);
+		cita.get().setFecha(fecha);
+		
 		cita.get().setObservaciones(citaDetalles.getObservaciones());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(citaService.save(cita.get()));

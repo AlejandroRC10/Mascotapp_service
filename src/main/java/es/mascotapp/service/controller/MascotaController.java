@@ -1,5 +1,6 @@
 package es.mascotapp.service.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,100 +23,120 @@ import es.mascotapp.service.dao.PropietarioDAO;
 import es.mascotapp.service.entity.Propietario;
 import es.mascotapp.service.entity.Mascota;
 import es.mascotapp.service.service.interfaces.MascotaService;
-
+import es.mascotapp.service.service.interfaces.PropietarioService;
 
 @RestController
 @RequestMapping("/api/mascotas")
 public class MascotaController {
-	
+
 	@Autowired
 	private MascotaService mascotaService;
-	
+
 	@Autowired
-	private PropietarioDAO propDAO;
-	
-	//Crear nueva mascota
+	private PropietarioService propService;
+
+	// Crear nueva mascota
 	@PostMapping("/{id}")
-	public ResponseEntity<?>create(@RequestBody Mascota mascota, @PathVariable(value = "id") Long propId){
-		
-		//Busca un propietario por el id que le entra en la petición e inicializa el atributo propietario de la entidad con el valor devuelto 
-		Propietario prop = propDAO.findById(propId).get();
-		
-		mascota.addPropietario(prop);
-		prop.addMascota(mascota);
-		
+	public ResponseEntity<?> create(@RequestBody Mascota mascota, @PathVariable(value = "id") Long propId) {
+
+		// Busca un propietario por el id que le entra en la petición e inicializa el
+		// atributo propietario de la entidad con el valor devuelto
+		// Propietario prop = propService.findById(propId).get();
+
+		Optional<Propietario> oProp = propService.findById(propId);
+
+		if (oProp.isPresent()) {
+			mascota.addPropietario(oProp.get());
+			oProp.get().addMascota(mascota);
+		}
+
+		System.out.println("mascota ---->>>" + mascota.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(mascotaService.save(mascota));
 	}
-	
-	//Obtener un mascota
+
+	// Obtener un mascota
 	@GetMapping("/{id}")
-	public ResponseEntity<?>read(@PathVariable(value = "id") Long mascId){
-		Optional<Mascota>oMasc = mascotaService.findById(mascId);
-		
-		if(!oMasc.isPresent()) {
+	public ResponseEntity<?> read(@PathVariable(value = "id") Long mascId) {
+		Optional<Mascota> oMasc = mascotaService.findById(mascId);
+
+		if (!oMasc.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		return ResponseEntity.ok(oMasc);
 	}
-	
-	//Actualizar mascota
+
+	// Actualizar mascota
 	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@RequestBody Mascota mascDetalles, @PathVariable(value = "id") Long mascId){
+	public ResponseEntity<?> update(@RequestBody Mascota mascDetalles, @PathVariable(value = "id") Long mascId) {
 		Optional<Mascota> mascota = mascotaService.findById(mascId);
-		
-		if(!mascota.isPresent()) {
+
+		if (!mascota.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		mascota.get().setNombre(mascDetalles.getNombre());
 		mascota.get().setRaza(mascDetalles.getRaza());
 		mascota.get().setNum_chip(mascDetalles.getNum_chip());
 		mascota.get().setEspecie(mascDetalles.getEspecie());
-		mascota.get().setFecha_nac(mascDetalles.getFecha_nac());
+		
+		Calendar fecha = mascDetalles.getFecha_nac();
+		fecha.add(Calendar.DATE, 1);
+		mascota.get().setFecha_nac(fecha);
+		
 		mascota.get().setPeso(mascDetalles.getPeso());
 		mascota.get().setSexo(mascDetalles.getSexo());
-		
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(mascotaService.save(mascota.get()));
 	}
-	
-	//Borrar una mascota
+
+	// Borrar una mascota
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete (@PathVariable(value = "id") Long mascId){
-		
-		if(!mascotaService.findById(mascId).isPresent()) {
+	public ResponseEntity<?> delete(@PathVariable(value = "id") Long mascId) {
+
+		if (!mascotaService.findById(mascId).isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		mascotaService.deleteById(mascId);
 		return ResponseEntity.ok().build();
 	}
-	
-	//Obtener todos los mascotas
+
+	// Obtener todos los mascotas
 	@GetMapping
-	public List<Mascota> readAll(){
-		List<Mascota> mascotas = StreamSupport
-				.stream(mascotaService.findAll().spliterator(), false)
+	public List<Mascota> readAll() {
+		List<Mascota> mascotas = StreamSupport.stream(mascotaService.findAll().spliterator(), false)
 				.collect(Collectors.toList());
 		return mascotas;
 	}
-	
-	//Obtener lista de mascotas por nombre
-	@GetMapping(params="name")
-	public List<Mascota> findByNombre(@RequestParam(value = "name") String nombre){
-		List<Mascota> mascotas = StreamSupport
-				.stream(mascotaService.findByNombre(nombre).spliterator(), false)
+
+	// Obtener lista de mascotas por nombre
+	@GetMapping(params = "name")
+	public List<Mascota> findByNombre(@RequestParam(value = "name") String nombre) {
+		List<Mascota> mascotas = StreamSupport.stream(mascotaService.findByNombre(nombre).spliterator(), false)
 				.collect(Collectors.toList());
 		return mascotas;
 	}
-	
-	//Obtener lista de mascotas por propietario_id
+
+	// Obtener lista de mascotas por propietario_id
 	@GetMapping(params = "prop_id")
-	public List<Mascota> findByPropietarioId(@RequestParam(value = "prop_id") Long id){
-		List<Mascota>mascotas = StreamSupport
-				.stream(mascotaService.findByPropietarioId(id).spliterator(), false)
+	public List<Mascota> findByPropietarioId(@RequestParam(value = "prop_id") Long id) {
+		List<Mascota> mascotas = StreamSupport.stream(mascotaService.findByPropietarioId(id).spliterator(), false)
 				.collect(Collectors.toList());
 		return mascotas;
+	}
+
+	//Obtener mascota su nombre y el id de su propietario 
+	@GetMapping(params = { "prop_id", "nombre" })
+	public ResponseEntity<?> findByPropietarioIdAndNombre(@RequestParam(value = "prop_id") Long propId,
+			@RequestParam(value = "nombre") String nombre) {
+		Optional<Mascota> oMasc = mascotaService.findByPropietarioIdAndNombre(propId, nombre);
+
+		if (!oMasc.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(oMasc);
 	}
 
 }
