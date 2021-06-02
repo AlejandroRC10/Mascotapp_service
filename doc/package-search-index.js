@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"es.mascotapp.service"},{"l":"es.mascotapp.service.controller"},{"l":"es.mascotapp.service.dao"},{"l":"es.mascotapp.service.entity"},{"l":"es.mascotapp.service.entity.enums"},{"l":"es.mascotapp.service.service.implement"},{"l":"es.mascotapp.service.service.interfaces"}];updateSearchResults();

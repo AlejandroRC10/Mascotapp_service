@@ -1,0 +1,7 @@
+es.mascotapp.service
+es.mascotapp.service.controller
+es.mascotapp.service.dao
+es.mascotapp.service.entity
+es.mascotapp.service.entity.enums
+es.mascotapp.service.service.implement
+es.mascotapp.service.service.interfaces

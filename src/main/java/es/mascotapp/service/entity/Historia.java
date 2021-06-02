@@ -1,4 +1,5 @@
 package es.mascotapp.service.entity;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -13,31 +14,36 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 @Table(name = "historias")
-public class Historia implements Serializable{
+public class Historia implements Serializable {
 
 	private static final long serialVersionUID = 4493013353428753184L;
 
+	@ApiModelProperty(value = "ID de la Historia", dataType = "long", example = "1", position = 1)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
-	@Column(length = 50, nullable=false)
+
+	@ApiModelProperty(value = "Fecha de la Historia", dataType = "Calendar", example = "2021-04-12", position = 2)
+	@Column(length = 50, nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar fecha;
-	
-	@Column(nullable=false)
+
+	@ApiModelProperty(value = "Enfermedad por la que necesita cuidados", dataType = "String", example = "Herida infectada en la pezuña", position = 3)
+	@Column(nullable = false)
 	private String enfermedad;
-	
-	@Column(nullable=false)
+
+	@ApiModelProperty(value = "Tratamiento para la enfermedad", dataType = "String", example = "Antibióticos 1 vez al día durante 7 días", position = 4)
+	@Column(nullable = false)
 	private String tratamiento;
-	
+
+	@ApiModelProperty(value = "Mascota a la que pertenece la Historia", dataType = "Mascota", position = 5)
 	@ManyToOne
-	@JoinColumn(name="mascota_id")
+	@JoinColumn(name = "mascota_id")
 	private Mascota mascota;
-	
-	
 
 	public long getId() {
 		return id;
@@ -70,7 +76,7 @@ public class Historia implements Serializable{
 	public void setTratamiento(String tratamiento) {
 		this.tratamiento = tratamiento;
 	}
-	
+
 	public Mascota getMascota() {
 		return mascota;
 	}
@@ -78,8 +84,7 @@ public class Historia implements Serializable{
 	public void setMascota(Mascota mascota) {
 		this.mascota = mascota;
 	}
-	
-	
+
 	public void addMascota(Mascota mascota) {
 		this.mascota = mascota;
 	}

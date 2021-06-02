@@ -5,34 +5,41 @@ import java.util.Calendar;
 import javax.persistence.*;
 
 import es.mascotapp.service.entity.enums.TipoDesparasitacion;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "desparasitaciones")
 public class Desparasitacion {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
+	@ApiModelProperty(value = "ID de la Desparasitacion", dataType = "long", example = "1", position = 1)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(nullable=false)
-	@Enumerated(value=EnumType.STRING)
+
+	@ApiModelProperty(value = "Tipo de Desparasitacion", dataType = "Enum", example = "COLLAR", position = 2)
+	@Column(nullable = false)
+	@Enumerated(value = EnumType.STRING)
 	private TipoDesparasitacion tipo;
-	
-	@Column(length = 50, nullable=false)
+
+	@ApiModelProperty(value = "Fecha de Desparasitacion", dataType = "Calendar", example = "2021-06-01", position = 3)
+	@Column(length = 50, nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar fecha;
-	
-	@Column(name = "proxima_fecha", length = 50, nullable=false)
+
+	@ApiModelProperty(value = "Fecha de próxima Desparasitacion", dataType = "Calendar", example = "2022-06-01", position = 4)
+	@Column(name = "proxima_fecha", length = 50, nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar proximaFecha;
-	
+
+	@ApiModelProperty(value = "Observaciones si las hubiera, sobre la Desparasitacion", dataType = "String", example = "En caso de que la Enfermedad de la Desparasitacion sea 'OTRA', se puede especificar aquí su nombre", position = 5)
 	@Column
 	private String observaciones;
-	
+
+	@ApiModelProperty(value = "Mascota a la que pertenece la Desparasitacion", dataType = "Mascota", position = 6)
 	@ManyToOne
-	@JoinColumn(name="mascota_id")
+	@JoinColumn(name = "mascota_id")
 	private Mascota mascota;
 
 	public Long getId() {
@@ -74,9 +81,7 @@ public class Desparasitacion {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
-	
-	
+
 	public Mascota getMascota() {
 		return mascota;
 	}
